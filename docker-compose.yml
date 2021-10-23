@@ -1,15 +1,16 @@
 services:
+  rabbitmq:
+    image: rabbitmq:latest
+
   backend:
-    container_name: app
     build:
       context: ./
       dockerfile: docker/app/Dockerfile
     environment:
       SECRET_KEY: secret!
-      BROKER_URL: amqp://guest:guest@host.docker.internal:5672//
+      BROKER_URL: amqp://guest:guest@rabbitmq:5672//
 
   nginx:
-    container_name: nginx
     build:
       context: ./
       dockerfile: docker/nginx/Dockerfile
@@ -19,10 +20,9 @@ services:
       - ./data/nginx:/var/log/nginx
 
   worker:
-    container_name: worker
     build:
       context: ./
       dockerfile: docker/worker/Dockerfile
     environment:
-      BROKER_URL: amqp://guest:guest@host.docker.internal:5672//
+      BROKER_URL: amqp://guest:guest@rabbitmq:5672//
     command: "celery -A worker worker -l info -P solo"
