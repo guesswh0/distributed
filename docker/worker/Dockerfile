@@ -1,6 +1,6 @@
 FROM python:3.8 AS builder
 # install dependencies to the local user directory (eg. /root/.local)
-RUN pip install --user celery
+RUN pip install --user celery==5.1.2
 
 FROM python:3.8-slim
 WORKDIR /usr/src/app
