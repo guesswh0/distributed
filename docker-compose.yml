@@ -16,8 +16,6 @@ services:
       dockerfile: docker/nginx/Dockerfile
     ports:
       - 80:80
-    volumes:
-      - ./data/nginx:/var/log/nginx
 
   worker:
     build:
